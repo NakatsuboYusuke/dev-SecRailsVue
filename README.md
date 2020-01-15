@@ -16,6 +16,7 @@ https://bit.ly/2FJqOjk
 
 ```
 $ rails _5.2.3_ new rails-vue-sandbox -d postgresql
+$ rails db:create
 ```
 
 ## Webpackerをインストール
@@ -91,3 +92,62 @@ new Vue({
 - config/webpack/shared.js
 - package.json
 - yarn.lock
+
+## インデックス画面を作成
+
+```
+$ rails g controller Home index
+```
+
+```
+# app/controllers/home_controller.rb
+class HomeController < ApplicationController
+  def index
+  end
+end
+
+```
+
+```
+# app/views/home/index.html.erb
+# => ビューは空にしておく
+
+# app/views/layouts/application.html.erb
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RailsVueSandbox</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <%= yield %>
+    <%= javascript_pack_tag 'hello_vue' %>
+  </body>
+</html>
+```
+
+```
+# config/routes.rb
+
+Rails.application.routes.draw do
+  root to: 'home#index'
+end
+```
+
+## JavaScriptをコンパイルする
+
+```
+$ bin/webpack
+```
+
+## 画面をロードする
+
+```
+$ rails s
+```
