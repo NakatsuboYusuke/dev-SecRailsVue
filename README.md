@@ -110,26 +110,9 @@ end
 
 ```
 # app/views/home/index.html.erb
-# => ビューは空にしておく
 
-# app/views/layouts/application.html.erb
-
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>RailsVueSandbox</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
-
-  <body>
-    <%= yield %>
-    <%= javascript_pack_tag 'hello_vue' %>
-  </body>
-</html>
+<%= javascript_pack_tag 'hello_vue' %>
+<%= stylesheet_pack_tag 'hello_vue' %>
 ```
 
 ```
@@ -140,10 +123,47 @@ Rails.application.routes.draw do
 end
 ```
 
-## JavaScriptをコンパイルする
-
 ```
-$ bin/webpack
+# app/javascript/app.vue
+
+<template>
+  <div id="app">
+    <p>{{ message }}</p>
+  </div>
+</template>
+
+<script>
+export default {
+  data: function () {
+    return {
+      message: "Hello Vue!"
+    }
+  }
+}
+</script>
+
+<style scoped>
+p {
+  font-size: 2em;
+  text-align: center;
+}
+</style>
+
+
+# app/javascript/packs/hello_vue.js
+
+import Vue from 'vue'
+import App from '../app.vue'
+
+document.addEventListener('DOMContentLoaded', () => {
+  const el = document.body.appendChild(document.createElement('hello'))
+  const app = new Vue({
+    el,
+    render: h => h(App)
+  })
+
+  console.log(app)
+})
 ```
 
 ## 画面をロードする
